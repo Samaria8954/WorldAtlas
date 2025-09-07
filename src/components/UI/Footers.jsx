@@ -6,30 +6,55 @@ import { TbMailPlus } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
 
 
-export const Footers=()=>{
+export const Footers = () => {
 
-     const footerIcon = {
+  const footerIcon = {
     MdPlace: <MdPlace />,
     IoCallSharp: <IoCallSharp />,
     TbMailPlus: <TbMailPlus />,
   };
 
-    return (
-         <footer className="footer-section">
+  return (
+    <footer className="footer-section">
       <div className="container grid grid-three-cols">
         {footerContact.map((curData, index) => {
           const { icon, title, details } = curData;
+
+       
+          let href = "#";
+          if (title.toLowerCase().includes("find")) {
+         
+            href = `https://www.google.com/maps?q=${encodeURIComponent(details)}`;
+          } else if (title.toLowerCase().includes("call")) {
+       
+            const phone = details.replace(/\D/g, "");
+            href = `https://wa.me/${phone}`;
+          } else if (title.toLowerCase().includes("mail")) {
+           
+            href = `mailto:${details}`;
+          }
+
           return (
             <div className="footer-contact" key={index}>
               <div className="icon">{footerIcon[icon]}</div>
               <div className="footer-contact-text">
                 <p>{title}</p>
-                <p>{details}</p>
+                <p>
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-link"
+                  >
+                    {details}
+                  </a>
+                </p>
               </div>
             </div>
           );
         })}
       </div>
+
 
       <div className="copyright-area">
         <div className="container">
@@ -74,5 +99,5 @@ export const Footers=()=>{
         </div>
       </div>
     </footer>
-    );
+  );
 }
